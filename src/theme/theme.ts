@@ -25,6 +25,8 @@ export const theme = createTheme({
     primary: palette.greenPrimary,
     primaryContrast: palette.grayWhite,
 
+    buttonPrimary: palette.greenPrimary,
+
     background: palette.grayWhite,
     backgroundContrast: palette.grayBlack,
 
@@ -35,9 +37,31 @@ export const theme = createTheme({
     successLight: palette.greenSuccessLight
   },
 
-  spacing: {},
+  spacing: {
+    s4: 4,
+    s8: 8,
+    s10: 10,
+    s12: 12,
+    s14: 14,
+    s16: 16,
+    s20: 20,
+    s24: 24,
+    s32: 32,
+    s40: 40,
+    s48: 48,
+    s56: 56
+  },
 
-  borderRadius: {}
+  borderRadii: {
+    s8: 8,
+    s12: 12,
+    s16: 16
+  },
+
+  textVariants: {
+    defaults: {}
+  }
 })
 
 export type Theme = typeof theme
+export type ThemeColors = keyof Theme['colors']
