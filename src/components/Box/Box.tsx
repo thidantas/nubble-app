@@ -21,7 +21,7 @@ import {
 import { Theme } from '../../theme/theme'
 
 export const Box = createBox<Theme>()
-export type Box = RSBoxProps<Theme>
+export type BoxProps = RSBoxProps<Theme>
 
 export type TouchableOpacityBoxProps = BackgroundColorProps<Theme> &
   BorderProps<Theme> &
