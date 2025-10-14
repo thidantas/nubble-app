@@ -1,10 +1,12 @@
-import {
-  Text as RNText,
-  TextProps as RNTextProps,
-  TextStyle
-} from 'react-native'
+import { TextStyle } from 'react-native'
+import { createText } from '@shopify/restyle'
 
-interface TextProps extends RNTextProps {
+import { Theme } from '../../theme/theme'
+
+const SRText = createText<Theme>()
+type SRTextProps = React.ComponentProps<typeof SRText>
+
+interface TextProps extends SRTextProps {
   preset?: TextVariants
   bold?: boolean
   italic?: boolean
@@ -18,29 +20,34 @@ export function Text({
   italic,
   semiBold,
   style,
-  ...rest
+  ...sRTextProps
 }: TextProps) {
   const fontFamily = getFontFamily(preset, bold, italic, semiBold)
 
   return (
-    <RNText style={[$fontSizes[preset], { fontFamily }, style]} {...rest}>
+    <SRText
+      color="backgroundContrast"
+      style={[$fontSizes[preset], { fontFamily }, style]}
+      {...sRTextProps}
+    >
       {children}
-    </RNText>
+    </SRText>
   )
 }
 
 function getFontFamily(
   preset: TextVariants,
   bold?: boolean,
-  semiBold?: boolean,
-  italic?: boolean
+  italic?: boolean,
+  semiBold?: boolean
 ) {
   if (
     preset === 'headingLarge' ||
     preset === 'headingMedium' ||
     preset === 'headingSmall'
-  )
-    return $fontFamily.bold
+  ) {
+    return italic ? $fontFamily.boldItalic : $fontFamily.bold
+  }
 
   switch (true) {
     case bold && italic:
@@ -93,12 +100,13 @@ const $fontFamily = {
   bold: 'Satoshi-Bold',
   boldItalic: 'Satoshi-BoldItalic',
 
+  italic: 'Satoshi-Italic',
+
   light: 'Satoshi-Light',
   lightItalic: 'Satoshi-LightItalic',
 
   medium: 'Satoshi-Medium',
   mediumItalic: 'Satoshi-MediumItalic',
 
-  italic: 'Satoshi-Italic',
   regular: 'Satoshi-Regular'
 }
