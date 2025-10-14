@@ -1,29 +1,45 @@
-import { TouchableOpacity } from 'react-native'
-import { useTheme } from '@shopify/restyle'
-
 import { Text } from '../Text/Text'
-import { Theme } from '../../theme/theme'
 
-interface ButtonProps {
+import { TouchableOpacityBox, TouchableOpacityBoxProps } from '../Box/Box'
+import { buttonPresets } from './buttonPresets'
+import { ActivityIndicator } from '../ActivityIndicator/ActivityIndicator'
+
+export type ButtonPreset = 'primary' | 'outline'
+
+interface ButtonProps extends TouchableOpacityBoxProps {
   title: string
+  loading?: boolean
+  preset?: ButtonPreset
+  disabled?: boolean
 }
 
-export function Button({ title }: ButtonProps) {
-  const { colors } = useTheme<Theme>()
+export function Button({
+  title,
+  loading,
+  preset = 'primary',
+  disabled,
+  ...touchableOpacityBoxProps
+}: ButtonProps) {
+  const buttonPreset = buttonPresets[preset][disabled ? 'disabled' : 'default']
 
   return (
-    <TouchableOpacity
-      style={{
-        paddingHorizontal: 20,
-        paddingVertical: 14,
-        backgroundColor: colors.greenPrimary,
-        alignItems: 'center',
-        borderRadius: 16
-      }}
+    <TouchableOpacityBox
+      disabled={disabled || loading}
+      paddingHorizontal="s20"
+      height={50}
+      alignItems="center"
+      justifyContent="center"
+      borderRadius="s16"
+      {...buttonPreset.container}
+      {...touchableOpacityBoxProps}
     >
-      <Text preset="paragraphMedium" bold style={{ color: '#FFF' }}>
-        {title}
-      </Text>
-    </TouchableOpacity>
+      {loading ? (
+        <ActivityIndicator color={buttonPreset.content} />
+      ) : (
+        <Text preset="paragraphMedium" bold color={buttonPreset.content}>
+          {title}
+        </Text>
+      )}
+    </TouchableOpacityBox>
   )
 }
