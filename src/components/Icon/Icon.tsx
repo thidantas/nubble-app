@@ -31,13 +31,16 @@ import { SettingsIcon } from '../../assets/icons/SettingsIcon'
 import { TrashIcon } from '../../assets/icons/TrashIcon'
 import { useAppTheme } from '../../hooks/useAppTheme'
 import { ThemeColors } from '../../theme/theme'
+import { CheckRoundIcon } from '../../assets/icons/CheckRoundIcon'
+import { ErrorRoundIcon } from '../../assets/icons/ErrorRoundIcon'
+import { MessageRoundIcon } from '../../assets/icons/MessageRoundIcon'
 
 export interface IconBase {
   size?: number
   iconColor?: string
 }
 
-interface IconProps {
+export interface IconProps {
   name: IconName
   color?: ThemeColors
   size?: number
@@ -75,8 +78,10 @@ const iconRegistry = {
   chat: ChatIcon,
   chatOn: ChatOnIcon,
   check: CheckIcon,
+  checkRound: CheckRoundIcon,
   chevronRight: ChevronRightIcon,
   comment: CommentIcon,
+  errorRound: ErrorRoundIcon,
   eyeOn: EyeOnIcon,
   eyeOff: EyeOffIcon,
   flashOn: FlashOnIcon,
@@ -86,6 +91,7 @@ const iconRegistry = {
   home: HomeIcon,
   homeFill: HomeFillIcon,
   message: MessageIcon,
+  messageRound: MessageRoundIcon,
   more: MoreIcon,
   newPost: NewPostIcon,
   profile: ProfileIcon,
