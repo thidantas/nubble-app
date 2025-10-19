@@ -1,12 +1,29 @@
-import { Button } from '../../../components/Button/Button'
-import { PasswordInput } from '../../../components/PasswordInput/PasswordInput'
-import { Screen } from '../../../components/Screen/Screen'
-import { Text } from '../../../components/Text/Text'
-import { TextInput } from '../../../components/TextInput/TextInput'
+import { NativeStackScreenProps } from '@react-navigation/native-stack'
 
-export function SignUpScreen() {
+import { Text } from '../../../components/Text/Text'
+import { Button } from '../../../components/Button/Button'
+import { Screen } from '../../../components/Screen/Screen'
+import { TextInput } from '../../../components/TextInput/TextInput'
+import { PasswordInput } from '../../../components/PasswordInput/PasswordInput'
+import { RootStackParamList } from '../../../routes/Routes'
+import { useResetNavigationSuccess } from '../../../hooks/useResetNavigationSuccess'
+
+type ScreenProps = NativeStackScreenProps<RootStackParamList, 'SignUpScreen'>
+
+export function SignUpScreen({ navigation }: ScreenProps) {
+  const { resetNavigation } = useResetNavigationSuccess()
+
   function submitForm() {
     //TODO: implementation of form submission logic
+
+    resetNavigation({
+      title: 'Sua conta foi criada com sucesso',
+      description: 'Agora é só fazer login na nossa plataforma',
+      icon: {
+        name: 'checkRound',
+        color: 'success'
+      }
+    })
   }
 
   return (
