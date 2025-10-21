@@ -3,8 +3,8 @@ import {
   ActivityIndicatorProps as RNActivityIndicatorProps
 } from 'react-native'
 
-import { ThemeColors } from '../../theme/theme'
-import { useAppTheme } from '../../hooks/useAppTheme'
+import { useAppTheme } from '@hooks'
+import { ThemeColors } from '@theme'
 
 interface ActivityIndicatorProps
   extends Omit<RNActivityIndicatorProps, 'color'> {

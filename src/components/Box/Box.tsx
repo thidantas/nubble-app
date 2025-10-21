@@ -2,6 +2,7 @@ import {
   TouchableOpacity,
   TouchableOpacityProps as RNTouchableOpacityProps
 } from 'react-native'
+
 import {
   createBox,
   createRestyleComponent,
@@ -18,7 +19,7 @@ import {
   BoxProps as RSBoxProps
 } from '@shopify/restyle'
 
-import { Theme } from '../../theme/theme'
+import { Theme } from '@theme'
 
 export const Box = createBox<Theme>()
 export type BoxProps = RSBoxProps<Theme>
