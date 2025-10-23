@@ -1,11 +1,11 @@
 import { useNavigation } from '@react-navigation/native'
 
-import { RootStackParamList } from '@routes'
+import { AuthStackParamList } from '@routes'
 
 export function useResetNavigationSuccess() {
   const navigation = useNavigation()
 
-  function resetNavigation(params: RootStackParamList['SuccessScreen']) {
+  function resetNavigation(params: AuthStackParamList['SuccessScreen']) {
     navigation.reset({
       index: 1,
       routes: [
