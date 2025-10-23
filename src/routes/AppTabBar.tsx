@@ -54,6 +54,7 @@ export function AppTabBar({
         return (
           <TouchableOpacityBox
             {...$itemWrapper}
+            key={tabItem.label}
             accessibilityState={isFocused ? { selected: true } : {}}
             accessibilityLabel={options.tabBarAccessibilityLabel}
             testID={options.tabBarButtonTestID}
