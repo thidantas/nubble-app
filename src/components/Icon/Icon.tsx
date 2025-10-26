@@ -36,7 +36,6 @@ import { SendIcon } from '../../assets/icons/SendIcon'
 import { SettingsIcon } from '../../assets/icons/SettingsIcon'
 import { TrashIcon } from '../../assets/icons/TrashIcon'
 
-
 export interface IconBase {
   size?: number
   iconColor?: string
@@ -75,7 +74,7 @@ const iconRegistry = {
   bell: BellIcon,
   bellOn: BellOnIcon,
   bookmark: BookMarkIcon,
-  bookMarkFill: BookmarkFillIcon,
+  bookmarkFill: BookmarkFillIcon,
   camera: CameraIcon,
   chat: ChatIcon,
   chatOn: ChatOnIcon,
