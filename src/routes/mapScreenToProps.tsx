@@ -29,7 +29,7 @@ export const mapScreenToProps: Record<
   FavoriteScreen: {
     label: 'Favoritos',
     icon: {
-      focused: 'bookMarkFill',
+      focused: 'bookmarkFill',
       unfocused: 'bookmark'
     }
   },
