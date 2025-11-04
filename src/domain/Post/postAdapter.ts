@@ -13,7 +13,8 @@ function toPost(postAPI: PostAPI): Post {
     author: {
       profileURL: postAPI.user.profile_url,
       name: postAPI.user.full_name,
-      userName: postAPI.user.username
+      userName: postAPI.user.username,
+      id: postAPI.user.id
     },
     imageURL: postAPI.image_url,
     reactionCount: Number(postAPI.meta.like_count),
