@@ -18,8 +18,7 @@ export function PostCommentScreen({
   const postId = route.params.postId
   const postAuthorId = route.params.postAuthorId
 
-  const { list, hasNextPage, fetchNextPage, refresh } =
-    usePostCommentList(postId)
+  const { list, hasNextPage, fetchNextPage } = usePostCommentList(postId)
 
   const { id } = useUser()
   const { bottom } = useAppSafeArea()
@@ -27,8 +26,8 @@ export function PostCommentScreen({
   function renderItem({ item }: ListRenderItemInfo<PostComment>) {
     return (
       <PostCommentItem
+        postId={postId}
         postComment={item}
-        onRemoveComment={refresh}
         userId={id}
         postAuthorId={postAuthorId}
       />
@@ -40,17 +39,18 @@ export function PostCommentScreen({
       <Box justifyContent="space-between" flex={1}>
         <FlatList
           showsVerticalScrollIndicator={false}
+          keyExtractor={item => item.id.toString()}
           data={list}
           renderItem={renderItem}
           contentContainerStyle={{ paddingBottom: bottom }}
           ListFooterComponent={
             <PostCommentBottom
-              fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
+              fetchNextPage={fetchNextPage}
             />
           }
         />
-        <PostCommentTextMessage postId={postId} onAddComment={refresh} />
+        <PostCommentTextMessage postId={postId} />
       </Box>
     </Screen>
   )
