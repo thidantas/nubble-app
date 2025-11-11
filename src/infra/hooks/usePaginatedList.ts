@@ -1,69 +1,47 @@
 import { useEffect, useState } from 'react'
 
+import { useInfiniteQuery } from '@tanstack/react-query'
 import { Page } from '@types'
 
+export interface UsePaginatedListResult<TData> {
+  list: TData[]
+  isError: boolean | null
+  isLoading: boolean
+  refresh: () => void
+  fetchNextPage: () => void
+  hasNextPage: boolean
+}
+
 export function usePaginatedList<Data>(
+  queryKey: readonly unknown[],
   getList: (page: number) => Promise<Page<Data>>
-) {
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<boolean | null>(false)
+): UsePaginatedListResult<Data> {
   const [list, setList] = useState<Data[]>([])
-  const [page, setPage] = useState(1)
-  const [hasNextPage, setHasNextPage] = useState(true)
 
-  async function fetchInitialData() {
-    try {
-      setError(null)
-      setLoading(true)
-      const { data, meta } = await getList(1)
-      setList(data)
-      if (meta.hasNextPage) {
-        setPage(2)
-        setHasNextPage(true)
-      } else {
-        setHasNextPage(false)
-      }
-    } catch (err) {
-      console.log('ERROR', err)
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  async function fetchNextPage() {
-    if (loading || !hasNextPage) return
-
-    try {
-      setLoading(true)
-      const { data, meta } = await getList(page)
-      setList(prev => [...prev, ...data])
-      if (meta.hasNextPage) {
-        setPage(prev => prev + 1)
-        setHasNextPage(true)
-      } else {
-        setHasNextPage(false)
-      }
-    } catch (err) {
-      console.log('ERROR', err)
-      setError(true)
-    } finally {
-      setLoading(false)
-    }
-  }
+  const { data, isLoading, isError, hasNextPage, fetchNextPage, refetch } =
+    useInfiniteQuery({
+      queryKey: queryKey,
+      queryFn: ({ pageParam = 1 }) => getList(pageParam),
+      getNextPageParam: ({ meta }) =>
+        meta.hasNextPage ? meta.currentPage + 1 : undefined
+    })
 
   useEffect(() => {
-    fetchInitialData()
+    if (data) {
+      const newList = data.pages.reduce<Data[]>((prev, curr) => {
+        return [...prev, ...curr.data]
+      }, [])
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+      setList(newList)
+    }
+  }, [data])
 
   return {
     list,
-    error,
-    loading,
-    hasNextPage,
-    refresh: fetchInitialData,
-    fetchNextPage
+    isError: isError,
+    isLoading: isLoading,
+    hasNextPage: !!hasNextPage,
+    refresh: refetch,
+    fetchNextPage: fetchNextPage
   }
 }
