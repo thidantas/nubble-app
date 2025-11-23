@@ -1,6 +1,6 @@
-import { Alert } from 'react-native'
-
+import { useAuthSignIn } from '@domain'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useToastService } from '@services'
 import { useForm } from 'react-hook-form'
 
 import {
@@ -15,6 +15,10 @@ import { AuthScreenProps } from '@routes'
 import { LoginSchema, loginSchema } from './loginSchema'
 
 export function LoginScreen({ navigation }: AuthScreenProps<'LoginScreen'>) {
+  const { showToast } = useToastService()
+  const { isLoading, signIn } = useAuthSignIn({
+    onError: message => showToast({ message, type: 'error' })
+  })
   const { control, formState, handleSubmit } = useForm<LoginSchema>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
@@ -25,7 +29,7 @@ export function LoginScreen({ navigation }: AuthScreenProps<'LoginScreen'>) {
   })
 
   function submitForm({ email, password }: LoginSchema) {
-    Alert.alert(`Email: ${email} \nSenha: ${password}`)
+    signIn({ email, password })
   }
 
   function navigateToSignUpScreen() {
@@ -72,6 +76,7 @@ export function LoginScreen({ navigation }: AuthScreenProps<'LoginScreen'>) {
       </Text>
 
       <Button
+        loading={isLoading}
         disabled={!formState.isValid}
         title="Entrar"
         onPress={handleSubmit(submitForm)}

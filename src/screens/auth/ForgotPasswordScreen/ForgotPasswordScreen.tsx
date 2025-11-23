@@ -1,19 +1,37 @@
+import { useAuthRequestNewPassword } from '@domain'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { useToastService } from '@services'
 import { useForm } from 'react-hook-form'
 
 import { Button, Screen, Text, FormTextInput } from '@components'
 import { useResetNavigationSuccess } from '@hooks'
-import { AuthScreenProps } from '@routes'
+import { AuthScreenProps, AuthStackParamList } from '@routes'
 
 import {
   forgotPasswordSchema,
   ForgotPasswordSchema
 } from './forgotPasswordSchema'
 
+const resetParam: AuthStackParamList['SuccessScreen'] = {
+  title: 'Enviamos as \ninstruções para seu \ne-mail',
+  description: 'Clique no link enviado no seu e-mail para recuperar sua senha',
+  icon: {
+    name: 'messageRound',
+    color: 'primary'
+  }
+}
+
 export function ForgotPasswordScreen({
   navigation
 }: AuthScreenProps<'ForgotPasswordScreen'>) {
   const { resetNavigation } = useResetNavigationSuccess()
+
+  const { showToast } = useToastService()
+
+  const { requestNewPassword, isLoading } = useAuthRequestNewPassword({
+    onSuccess: () => resetNavigation(resetParam),
+    onError: message => showToast({ message, type: 'error' })
+  })
 
   const { control, formState, handleSubmit } = useForm<ForgotPasswordSchema>({
     resolver: zodResolver(forgotPasswordSchema),
@@ -25,17 +43,7 @@ export function ForgotPasswordScreen({
 
   function submitForm(values: ForgotPasswordSchema) {
     console.log('value:', values)
-    // TODO: submit form
-
-    resetNavigation({
-      title: 'Enviamos as \ninstruções para seu \ne-mail',
-      description:
-        'Clique no link enviado no seu e-mail para recuperar sua senha',
-      icon: {
-        name: 'messageRound',
-        color: 'primary'
-      }
-    })
+    requestNewPassword(values.email)
   }
 
   return (
@@ -56,6 +64,7 @@ export function ForgotPasswordScreen({
       />
 
       <Button
+        loading={isLoading}
         disabled={!formState.isValid}
         onPress={handleSubmit(submitForm)}
         title="Recuperar senha"
