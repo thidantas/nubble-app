@@ -18,8 +18,8 @@ const queryClient = new QueryClient()
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <AuthCredentialsProvider>
+    <AuthCredentialsProvider>
+      <QueryClientProvider client={queryClient}>
         <SafeAreaProvider>
           <ThemeProvider theme={theme}>
             {/* The `ToastProvider` should only be used for the layer with the implemented context. 
@@ -30,8 +30,8 @@ function App() {
             {/* </ToastProvider>  */}
           </ThemeProvider>
         </SafeAreaProvider>
-      </AuthCredentialsProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </AuthCredentialsProvider>
   )
 }
 
