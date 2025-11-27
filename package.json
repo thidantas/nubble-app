@@ -62,5 +62,16 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "jest": {
+    "preset": "react-native",
+    "collectCoverageFrom": [
+      "src/{utils,components}/**/*.{ts,tsx}"
+    ],
+    "coveragePathIgnorePatterns": [
+      "/node_modules/",
+      "src/types/",
+      "index"
+    ]
   }
 }
