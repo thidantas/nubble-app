@@ -2,9 +2,13 @@ import { differenceInSeconds, format, parseISO } from 'date-fns'
 
 function formatRelative(dateISO: string): string {
   const date = parseISO(dateISO)
-  const now = new Date()
+  const now = Date.now()
 
   const diffInSeconds = differenceInSeconds(now, date)
+
+  if (diffInSeconds < 0) {
+    return `Você enviou uma mensagem do futuro: ${format(date, 'dd/MM/yyyy')}`
+  }
 
   if (diffInSeconds < 60) {
     return `${diffInSeconds} s`
@@ -13,7 +17,7 @@ function formatRelative(dateISO: string): string {
   const diffInMinutes = Math.round(diffInSeconds / 60)
 
   if (diffInMinutes < 60) {
-    return `${diffInMinutes} m`
+    return `${diffInMinutes} min`
   }
 
   const diffInHours = Math.floor(diffInMinutes / 60)
@@ -38,10 +42,16 @@ function formatRelative(dateISO: string): string {
 
   const diffInYears = Math.floor(diffInDays / 365)
   if (diffInYears >= 1) {
+    const diffInDecades = Math.floor(diffInYears / 10)
+
+    if (diffInDecades >= 1) {
+      return format(date, 'dd/MM/yyyy')
+    }
+
     return `${diffInYears} a`
   }
 
-  return format(date, 'dd/MM/yyyy')
+  return 'Formato de data inválido'
 }
 
 export const dateUtils = { formatRelative }

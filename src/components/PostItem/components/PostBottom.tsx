@@ -44,7 +44,7 @@ export function PostBottom({
 }
 
 function getCommentText(commentCount: number) {
-  if (commentCount === 0) return ''
+  if (commentCount === 0) return null
   if (commentCount === 1) return 'Ver comentário'
   return `Ver ${commentCount} comentários`
 }
