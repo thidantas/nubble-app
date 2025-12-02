@@ -1,4 +1,4 @@
-import { AllTheProviders, renderHook, waitFor } from 'test-utils'
+import { renderHook, waitFor } from 'test-utils'
 
 import { authService } from '../../authService'
 import { useAuthSignIn } from '../useAuthSignIn'
@@ -29,14 +29,10 @@ describe('useAuthSignIn', () => {
 
     const mockedOnSuccess = jest.fn()
 
-    const { result } = renderHook(
-      () =>
-        useAuthSignIn({
-          onSuccess: mockedOnSuccess
-        }),
-      {
-        wrapper: AllTheProviders
-      }
+    const { result } = renderHook(() =>
+      useAuthSignIn({
+        onSuccess: mockedOnSuccess
+      })
     )
 
     result.current.signIn({ email: 'jhondoe@email.com', password: '123' })
@@ -53,11 +49,8 @@ describe('useAuthSignIn', () => {
 
     const mockedOnError = jest.fn()
 
-    const { result } = renderHook(
-      () => useAuthSignIn({ onError: mockedOnError }),
-      {
-        wrapper: AllTheProviders
-      }
+    const { result } = renderHook(() =>
+      useAuthSignIn({ onError: mockedOnError })
     )
 
     result.current.signIn({ email: 'jhondoe@email.com', password: '123' })

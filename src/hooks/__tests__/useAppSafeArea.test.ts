@@ -1,5 +1,5 @@
 import { EdgeInsets, useSafeAreaInsets } from 'react-native-safe-area-context'
-import { AllTheProviders, renderHook } from 'test-utils'
+import { renderHook } from 'test-utils'
 
 import { theme } from '@theme'
 
@@ -20,9 +20,7 @@ describe('useSafeArea', () => {
     )
 
     it('return the minimum requirement', () => {
-      const { result } = renderHook(() => useAppSafeArea(), {
-        wrapper: AllTheProviders
-      })
+      const { result } = renderHook(() => useAppSafeArea())
 
       expect(result.current.top).toBe(theme.spacing.s20)
       expect(result.current.bottom).toBe(theme.spacing.s20)
@@ -39,9 +37,7 @@ describe('useSafeArea', () => {
           } as EdgeInsets)
       )
 
-      const { result } = renderHook(() => useAppSafeArea(), {
-        wrapper: AllTheProviders
-      })
+      const { result } = renderHook(() => useAppSafeArea())
 
       expect(result.current.top).toEqual(30)
       expect(result.current.bottom).toEqual(30)
