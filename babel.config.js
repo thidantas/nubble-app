@@ -18,7 +18,8 @@ module.exports = {
           '@types': './src/types',
           '@utils': './src/utils',
           '@infra': './src/infra',
-          '@services': './src/services'
+          '@services': './src/services',
+          '@test': './src/test'
         }
       }
     ]
