@@ -7,9 +7,10 @@ export interface UsePaginatedListResult<TData> {
   list: TData[]
   isError: boolean | null
   isLoading: boolean
+  hasNextPage: boolean
+  isFetching: boolean
   refresh: () => void
   fetchNextPage: () => void
-  hasNextPage: boolean
 }
 
 export function usePaginatedList<Data>(
@@ -18,13 +19,20 @@ export function usePaginatedList<Data>(
 ): UsePaginatedListResult<Data> {
   const [list, setList] = useState<Data[]>([])
 
-  const { data, isLoading, isError, hasNextPage, fetchNextPage, refetch } =
-    useInfiniteQuery({
-      queryKey: queryKey,
-      queryFn: ({ pageParam = 1 }) => getList(pageParam),
-      getNextPageParam: ({ meta }) =>
-        meta.hasNextPage ? meta.currentPage + 1 : undefined
-    })
+  const {
+    data,
+    isLoading,
+    isError,
+    isFetching,
+    hasNextPage,
+    fetchNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: queryKey,
+    queryFn: ({ pageParam = 1 }) => getList(pageParam),
+    getNextPageParam: ({ meta }) =>
+      meta.hasNextPage ? meta.currentPage + 1 : undefined
+  })
 
   useEffect(() => {
     if (data) {
@@ -41,6 +49,7 @@ export function usePaginatedList<Data>(
     isError: isError,
     isLoading: isLoading,
     hasNextPage: !!hasNextPage,
+    isFetching: isFetching,
     refresh: refetch,
     fetchNextPage: fetchNextPage
   }
