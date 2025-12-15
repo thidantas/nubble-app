@@ -9,6 +9,7 @@ import { AuthCredentialsService } from '../authCredentialsTypes'
 export const AuthCredentialsContext = createContext<AuthCredentialsService>({
   isLoading: true,
   authCredentials: null,
+  userId: null,
   saveCredentials: async () => {},
   removeCredentials: async () => {}
 })
@@ -77,7 +78,7 @@ export function AuthCredentialsProvider({
 
   async function startAuthCredentials() {
     try {
-      await new Promise(resolve => setTimeout(resolve, 1000, ''))
+      // await new Promise(resolve => setTimeout(resolve, 1000, ''))
       const ac = await authCredentialsStorage.getAuthCredentials()
       if (ac) {
         authService.updateToken(ac.token)
@@ -103,9 +104,17 @@ export function AuthCredentialsProvider({
     setAuthCredentials(null)
   }
 
+  const userId = authCredentials?.user.id ?? null
+
   return (
     <AuthCredentialsContext.Provider
-      value={{ authCredentials, isLoading, saveCredentials, removeCredentials }}
+      value={{
+        authCredentials,
+        isLoading,
+        userId,
+        saveCredentials,
+        removeCredentials
+      }}
     >
       {children}
     </AuthCredentialsContext.Provider>
