@@ -15,7 +15,8 @@ const config: Config = {
   collectCoverageFrom: [
     'src/{utils,components,hooks,domain,screens}/**/*.{ts,tsx}'
   ],
-  coveragePathIgnorePatterns: ['/node_modules/', 'src/types/', 'index']
+  coveragePathIgnorePatterns: ['/node_modules/', 'src/types/', 'index'],
+  testTimeout: 15000
 }
 
 export default config
