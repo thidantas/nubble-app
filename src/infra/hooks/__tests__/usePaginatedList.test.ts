@@ -33,6 +33,8 @@ describe('usePaginatedList', () => {
       usePaginatedList(['key'], mockedGetList)
     )
 
+    await waitFor(() => expect(result.current.isFetching).toBe(false))
+
     await waitFor(() => expect(result.current.list).toStrictEqual(page1))
 
     result.current.fetchNextPage()
@@ -42,6 +44,8 @@ describe('usePaginatedList', () => {
     )
 
     result.current.fetchNextPage()
+
+    await waitFor(() => expect(result.current.isFetching).toBe(false))
 
     await waitFor(() => {
       expect(result.current.list).toStrictEqual([...page1, ...page2])
