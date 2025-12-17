@@ -2,9 +2,9 @@ export interface Post {
   id: number
   text: string
   author: {
-    profileURL: string
+    profileUrl: string
     name: string
-    userName: string
+    username: string
     id: number
   }
   imageURL: string
