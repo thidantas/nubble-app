@@ -1,10 +1,10 @@
 import { Post } from '@domain'
 
 import { Box } from '../Box/Box'
+import { ProfileUser } from '../ProfileUser/ProfileUser'
 
 import { PostActions } from './components/PostActions'
 import { PostBottom } from './components/PostBottom'
-import { PostHeader } from './components/PostHeader'
 import { PostImage } from './components/PostImage'
 
 interface PostItemProps {
@@ -14,7 +14,13 @@ interface PostItemProps {
 export function PostItem({ post }: PostItemProps) {
   return (
     <Box marginBottom="s24" paddingHorizontal="s24">
-      <PostHeader author={post.author} />
+      <ProfileUser
+        user={{
+          id: post.author.id,
+          username: post.author.username,
+          profileUrl: post.author.profileUrl
+        }}
+      />
       <PostImage imageURL={post.imageURL} />
       <PostActions
         commentCount={post.commentCount}
