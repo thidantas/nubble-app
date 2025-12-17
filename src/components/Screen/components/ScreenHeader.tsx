@@ -4,11 +4,20 @@ import { Box, TouchableOpacityBox, Icon, Text } from '@components'
 
 import { ScreenProps } from '../Screen'
 
-type ScreenHeaderProps = Pick<ScreenProps, 'title' | 'canGoBack'>
+type ScreenHeaderProps = Pick<
+  ScreenProps,
+  'title' | 'canGoBack' | 'HeaderComponent'
+>
 
 const ICON_SIZE = 20
-export function ScreenHeader({ title, canGoBack }: ScreenHeaderProps) {
+export function ScreenHeader({
+  title,
+  canGoBack,
+  HeaderComponent
+}: ScreenHeaderProps) {
   const navigation = useNavigation()
+
+  const showBackLabel = !title && !HeaderComponent
 
   return (
     <Box
@@ -21,16 +30,18 @@ export function ScreenHeader({ title, canGoBack }: ScreenHeaderProps) {
         <TouchableOpacityBox
           alignItems="center"
           flexDirection="row"
+          mr="s10"
           onPress={navigation.goBack}
         >
           <Icon size={ICON_SIZE} name="arrowLeft" color="primary" />
-          {!title && (
+          {showBackLabel && (
             <Text preset="paragraphMedium" semiBold ml="s8">
               Voltar
             </Text>
           )}
         </TouchableOpacityBox>
       )}
+      {HeaderComponent}
       {title && <Text preset="headingSmall">{title}</Text>}
       {title && <Box width={ICON_SIZE} height={ICON_SIZE} />}
     </Box>
