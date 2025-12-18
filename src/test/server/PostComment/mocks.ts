@@ -9,7 +9,6 @@ const jhonUserAPI: UserAPI = {
   last_name: 'Doe',
   username: 'jhondoe',
   email: 'jhondoe@email.com',
-
   profile_url: 'https://example-image.com/5-jhon.png',
   is_online: false,
   full_name: 'Jhon Doe'
