@@ -7,17 +7,26 @@ import { useSearchHistoryService } from '@services'
 import { Icon, ProfileUser, Screen, TextInput } from '@components'
 import { useDebounce } from '@hooks'
 
+import { SearchHistory } from './components/SearchHistory'
+
 export function SearchScreen({}) {
   const [search, setSearch] = useState('')
-
-  const { addUser } = useSearchHistoryService()
 
   const debouncedSearch = useDebounce(search)
 
   const { list } = useUserSearch(debouncedSearch)
 
+  const { addUser } = useSearchHistoryService()
+
   function renderItem({ item }: ListRenderItemInfo<User>) {
-    return <ProfileUser user={item} />
+    return (
+      <ProfileUser
+        onPress={() => {
+          addUser(item)
+        }}
+        user={item}
+      />
+    )
   }
 
   return (
@@ -32,11 +41,15 @@ export function SearchScreen({}) {
         />
       }
     >
-      <FlatList
-        data={list}
-        keyExtractor={item => item.username}
-        renderItem={renderItem}
-      />
+      {search.length === 0 ? (
+        <SearchHistory />
+      ) : (
+        <FlatList
+          data={list}
+          keyExtractor={item => item.username}
+          renderItem={renderItem}
+        />
+      )}
     </Screen>
   )
 }
