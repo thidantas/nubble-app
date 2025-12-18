@@ -15,6 +15,7 @@ export interface TextInputProps extends RNTextInputProps {
   label?: string
   errorMessage?: string
   RightComponent?: React.ReactElement
+  LeftComponent?: React.ReactElement
   boxProps?: BoxProps
 }
 
@@ -22,6 +23,7 @@ export function TextInput({
   label,
   errorMessage,
   RightComponent,
+  LeftComponent,
   boxProps,
   ...rNTextInputProps
 }: TextInputProps) {
@@ -41,13 +43,21 @@ export function TextInput({
   }
 
   return (
-    <Box {...boxProps}>
+    <Box flexGrow={1} flexShrink={1} {...boxProps}>
       <Pressable onPress={focusInput}>
-        <Text preset="paragraphMedium" marginBottom="s4">
-          {label}
-        </Text>
+        {!!label && (
+          <Text preset="paragraphMedium" marginBottom="s4">
+            {label}
+          </Text>
+        )}
 
         <Box {...$textInputContainer}>
+          {!!LeftComponent && (
+            <Box mr="s16" justifyContent="center">
+              {LeftComponent}
+            </Box>
+          )}
+
           <RNTextInput
             autoCapitalize="none"
             ref={inputRef}
@@ -56,14 +66,14 @@ export function TextInput({
             {...rNTextInputProps}
           />
 
-          {RightComponent && (
+          {!!RightComponent && (
             <Box ml="s16" justifyContent="center">
               {RightComponent}
             </Box>
           )}
         </Box>
 
-        {errorMessage && (
+        {!!errorMessage && (
           <Text color="error" preset="paragraphSmall" bold>
             {errorMessage}
           </Text>

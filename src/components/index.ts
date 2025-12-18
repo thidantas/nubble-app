@@ -13,3 +13,4 @@ export * from './Toast/Toast'
 
 export * from './PostItem/PostItem'
 export * from './ProfileAvatar/ProfileAvatar'
+export * from './ProfileUser/ProfileUser'
