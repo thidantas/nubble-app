@@ -42,7 +42,6 @@ export function ForgotPasswordScreen({
   })
 
   function submitForm(values: ForgotPasswordSchema) {
-    console.log('value:', values)
     requestNewPassword(values.email)
   }
 

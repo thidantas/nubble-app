@@ -20,14 +20,8 @@ const CONTROL_DIFF = 30
 
 export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
   const { top } = useAppSafeArea()
+
   const [flashOn, setFlashOn] = useState(false)
-
-  console.log('SCREEN_HEIGHT', SCREEN_HEIGHT)
-
-  console.log('SCREEN_WIDTH', SCREEN_WIDTH)
-
-  console.log('CONTROL_HEIGHT', CONTROL_HEIGHT)
-
   const [isReady, setIsReady] = useState(false)
 
   const device = useCameraDevice('back', {
@@ -46,13 +40,8 @@ export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
   const appState = useAppState()
   const isActive = isFocused && appState === 'active'
 
-  console.log({ isFocused, appState, isActive })
-
   async function takePhoto() {
-    console.log('clicou na cam?')
     if (camera.current == null) return
-
-    console.log('tirando foto...')
 
     const photoFile = await camera.current?.takePhoto({
       flash: flashOn ? 'on' : 'off',

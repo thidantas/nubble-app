@@ -3,9 +3,8 @@ import { Permission, PermissionsAndroid, Platform } from 'react-native'
 import { PermissionName, PermissionStatus } from './permissionTypes'
 
 async function check(name: PermissionName): Promise<PermissionStatus> {
-  console.log('PERMISSION ANDROID')
-
   const permission = mapNameToPermission(name)
+
   if (permission) {
     const result = await PermissionsAndroid.check(permission)
 
@@ -20,6 +19,7 @@ async function check(name: PermissionName): Promise<PermissionStatus> {
 
 async function request(name: PermissionName): Promise<PermissionStatus> {
   const permission = mapNameToPermission(name)
+
   if (permission) {
     const result = await PermissionsAndroid.request(permission)
 

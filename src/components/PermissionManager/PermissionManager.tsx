@@ -21,8 +21,6 @@ export function PermissionManager({
 }: PermissionManagerProps) {
   const { status, isLoading } = usePermission(permissionName)
 
-  console.log('PermissionManager status:', status)
-
   if (status === 'granted') {
     return children
   }

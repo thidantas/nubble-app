@@ -22,17 +22,12 @@ const mapStatus: Record<RnpPermissionStatus, PermissionStatus> = {
 }
 
 async function check(name: PermissionName): Promise<PermissionStatus> {
-  console.log('PERMISSION IOS')
-
   const status = await rnpCheck(mapName[name])
 
-  console.log('status ios', status)
   return mapStatus[status]
 }
 
 async function request(name: PermissionName): Promise<PermissionStatus> {
-  console.log('PERMISSION IOS')
-
   const status = await rnpRequest(mapName[name])
 
   return mapStatus[status]
