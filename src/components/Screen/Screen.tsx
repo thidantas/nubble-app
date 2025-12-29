@@ -17,6 +17,7 @@ export interface ScreenProps extends BoxProps {
   scrollable?: boolean
   style?: StyleProp<ViewStyle>
   title?: string
+  noPaddingHorizontal?: boolean
 }
 
 export function Screen({
@@ -26,6 +27,7 @@ export function Screen({
   style,
   title,
   HeaderComponent,
+  noPaddingHorizontal = false,
   ...boxProps
 }: ScreenProps) {
   const { top, bottom } = useAppSafeArea()
@@ -40,11 +42,12 @@ export function Screen({
     >
       <Container backgroundColor={colors.background}>
         <Box
-          paddingHorizontal="s24"
+          paddingHorizontal={noPaddingHorizontal ? undefined : 's24'}
           style={[{ paddingTop: top, paddingBottom: bottom }, style]}
           {...boxProps}
         >
           <ScreenHeader
+            paddingHorizontal={noPaddingHorizontal ? 's24' : undefined}
             HeaderComponent={HeaderComponent}
             canGoBack={canGoBack}
             title={title}
