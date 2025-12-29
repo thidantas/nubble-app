@@ -1,8 +1,13 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Dimensions, StyleSheet } from 'react-native'
 
 import { useIsFocused } from '@react-navigation/native'
-import { Camera, useCameraDevice } from 'react-native-vision-camera'
+import {
+  Camera,
+  Templates,
+  useCameraDevice,
+  useCameraFormat
+} from 'react-native-vision-camera'
 
 import { Box, BoxProps, Icon, PermissionManager } from '@components'
 import { useAppSafeArea, useAppState } from '@hooks'
@@ -23,13 +28,41 @@ export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
 
   console.log('CONTROL_HEIGHT', CONTROL_HEIGHT)
 
-  const device = useCameraDevice('back')
+  const [isReady, setIsReady] = useState(false)
+
+  const device = useCameraDevice('back', {
+    physicalDevices: [
+      'ultra-wide-angle-camera',
+      'wide-angle-camera',
+      'telephoto-camera'
+    ]
+  })
+
+  const camera = useRef<Camera>(null)
+
+  const format = useCameraFormat(device, Templates.Instagram)
 
   const isFocused = useIsFocused()
   const appState = useAppState()
   const isActive = isFocused && appState === 'active'
 
   console.log({ isFocused, appState, isActive })
+
+  async function takePhoto() {
+    console.log('clicou na cam?')
+    if (camera.current == null) return
+
+    console.log('tirando foto...')
+
+    const photoFile = await camera.current?.takePhoto({
+      flash: flashOn ? 'on' : 'off',
+      enableAutoRedEyeReduction: true
+    })
+
+    navigation.navigate('PublishPostScreen', {
+      imageUri: `file://${photoFile?.path}`
+    })
+  }
 
   function toggleFlash() {
     setFlashOn(prev => !prev)
@@ -43,9 +76,14 @@ export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
       <Box flex={1}>
         {device != null && (
           <Camera
+            ref={camera}
+            format={format}
             style={StyleSheet.absoluteFill}
             device={device}
             isActive={isActive}
+            photoQualityBalance="balanced"
+            onInitialized={() => setIsReady(true)}
+            photo={true}
           />
         )}
 
@@ -57,6 +95,7 @@ export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
               color="grayWhite"
               onPress={navigation.goBack}
             />
+
             <Icon
               size={20}
               name={flashOn ? 'flashOn' : 'flashOff'}
@@ -67,7 +106,14 @@ export function CameraScreen({ navigation }: AppScreenProps<'CameraScreen'>) {
           </Box>
 
           <Box {...$controlAreaBottom}>
-            <Icon name="cameraClick" size={80} color="grayWhite" />
+            {isReady && (
+              <Icon
+                name="cameraClick"
+                size={80}
+                color="grayWhite"
+                onPress={takePhoto}
+              />
+            )}
           </Box>
         </Box>
       </Box>
